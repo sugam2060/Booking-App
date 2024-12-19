@@ -27,7 +27,7 @@ const Register = () => {
     const onSubmit = handleSubmit( async (data)=>{
         mutation.mutate(data);
     })
-
+    //testing github
   return (
     <form className="flex flex-col gap-5 " onSubmit={onSubmit}>
         <h2 className="text-3xl font-bold">Create an Account</h2>
