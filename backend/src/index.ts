@@ -5,6 +5,7 @@ import 'dotenv/config'
 import mongoose from 'mongoose'
 import userRoute from './routes/userRoutes';
 import userAuth from './routes/auth';
+import cookieParser from 'cookie-parser'
 
 try {
     mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string)
@@ -16,9 +17,14 @@ try {
 const app = express();
 app.use(express.json())
 
+app.use(cookieParser())
+
 app.use(express.urlencoded({extended:true}))
 
-app.use(cors())
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+}))
 
 
 app.use('/api/users',userRoute)

@@ -3,6 +3,7 @@ import { check, validationResult } from "express-validator";
 import { User } from "../Database/models/user";
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
+import verifyToken from "../middlewares/verifyToken";
 
 const userAuth = Router();
 
@@ -40,6 +41,11 @@ userAuth.post("/login",[
             res.status(500).json({message:"something went wrong"})
         }
     }
+})
+
+
+userAuth.get('/validate-token',verifyToken, async(req:Request,res:Response)=>{
+    res.status(200).send({userId:req.userId})
 })
 
 
