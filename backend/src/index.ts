@@ -1,15 +1,17 @@
 import express from 'express'
-import { Response,Request } from 'express';
 import cors from 'cors'
 import 'dotenv/config'
 import mongoose from 'mongoose'
 import userRoute from './routes/userRoutes';
 import userAuth from './routes/auth';
 import cookieParser from 'cookie-parser'
+import path from 'path'
+
 
 try {
-    mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string)
-    console.log('connected')
+    mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string).then(()=>{
+        console.log("connected to database")
+    })
 } catch (error) {
     console.log(error)
 }
@@ -26,6 +28,7 @@ app.use(cors({
     credentials: true,
 }))
 
+app.use(express.static(path.join(__dirname,'../../frontend/dist')))
 
 app.use('/api/users',userRoute)
 

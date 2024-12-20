@@ -1,0 +1,1 @@
+{"root":["./src/index.ts","./src/Database/models/user.ts","./src/function/MailSender.ts","./src/function/generateOTPAndToken.ts","./src/function/generateToken.ts","./src/middlewares/verifyToken.ts","./src/routes/auth.ts","./src/routes/userRoutes.ts"],"version":"5.7.2"}

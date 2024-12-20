@@ -28,6 +28,7 @@ userAuth.post("/login",[
                     res.status(400).json({message:"Invalid Credentials"})
                 }else{
                     const token = jwt.sign({userId: user._id},process.env.JWT_SECRET_KEY as string,{expiresIn: '1d'})
+                    
                     res.cookie("authToken",token,{
                         httpOnly:true,
                         secure: process.env.ENVIRONMENT === 'PRODUCTION',
@@ -46,6 +47,20 @@ userAuth.post("/login",[
 
 userAuth.get('/validate-token',verifyToken, async(req:Request,res:Response)=>{
     res.status(200).send({userId:req.userId})
+})
+
+
+userAuth.post('/logout', (req:Request,res:Response)=>{
+    try{
+        res.cookie('authToken','',{
+            expires: new Date(0)
+        })
+        res.status(200).send();
+    }catch(err){
+        console.log(err);
+        res.status(500).send();
+    }
+    
 })
 
 
