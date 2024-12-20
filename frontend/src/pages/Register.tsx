@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form"
 import * as apiClient from "../api-client"
-import { useMutation } from "react-query"
+import { useMutation, useQueryClient } from "react-query"
 import { useAppContext } from "../contexts/AppContext"
 import { useNavigate } from "react-router-dom"
 import { FormEvent, useState } from "react"
@@ -128,21 +128,21 @@ export default Register
 
 
 const OtpPage = ({formData}:{formData:RegisterFormData}) => {
-
+    const queryClient = useQueryClient()
     const navigate = useNavigate()  
     const [otp, setOtp] = useState<string>('');
     const [errormsg,setErrorMessage] = useState<string>('');
-    const {showToast,setIslogedIn} = useAppContext()
+    const {showToast} = useAppContext()
 
     const handleOtpChange = (newValue: string) => {
         setOtp(newValue)
     }
 
     const mutation = useMutation(apiClient.verifyOTP,{
-        onSuccess: (data:string) => {
-            navigate('/');
-            setIslogedIn(true)
+        onSuccess: async (data:string) => {
             showToast({messsage:data,type:'SUCCESS'})
+            await queryClient.invalidateQueries('validateToken')
+            navigate('/',{replace:true});
         },
         onError:()=>{
             setErrorMessage('Invalid otp');
@@ -159,20 +159,20 @@ const OtpPage = ({formData}:{formData:RegisterFormData}) => {
         <div className="flex justify-center flex-col items-center h-60 gap-1">
             <p className="text-red-500">{errormsg}</p>
             <form onSubmit={handleSubmit}>
-                <InputOTP maxLength={6} value={otp} onChange={handleOtpChange}>
+                <InputOTP maxLength={6} value={otp} onChange={handleOtpChange} data-testid='otp-input'>
                     <InputOTPGroup>
                         {[...Array(3)].map((_, index) => (
-                            <InputOTPSlot key={index} index={index} />
+                            <InputOTPSlot key={index} index={index} data-testid={`otp-input-${index}`} />
                         ))}
                     </InputOTPGroup>
                     <InputOTPSeparator />
                     <InputOTPGroup>
                         {[...Array(3)].map((_, index) => (
-                            <InputOTPSlot key={index + 3} index={index + 3} />
+                            <InputOTPSlot key={index + 3} index={index + 3} data-testid={`otp-input-${index+3}`} />
                         ))}
                     </InputOTPGroup>
                 </InputOTP>
-                <button type='submit'>submit</button>
+                <button type='submit' className="py-1 mt-2 text-white bg-blue-600 px-2">submit otp</button>
             </form>
         </div>
     )
