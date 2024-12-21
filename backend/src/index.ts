@@ -10,7 +10,6 @@ import {v2 as cloudinary} from 'cloudinary'
 import hotelRoute from './routes/myHotel';
 
 //test
-import gridRouter from './Database/gridfs/gridFs'
 
 try {
     mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string).then(()=>{
@@ -46,9 +45,8 @@ app.use('/api/auth',userAuth)
 
 app.use('/api/my-hotels',hotelRoute)
 
-//test
 
-//app.use('/api/test-gridfs',gridRouter)
+
 
 
 app.listen(5000,()=>{
