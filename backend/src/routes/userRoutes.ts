@@ -52,8 +52,8 @@ userRoute.post('/verify-otp',async(req:Request,res:Response)=>{
     const cookie = req.cookies['otpToken']
     
     const {otp,firstName,lastName,email,password} = req.body
-    // const response = verifyOTP(otp,cookie);
-    const response = true
+     const response = verifyOTP(otp,cookie);
+    
     if(response){
         try{
            const user = new User({email,firstName,lastName,password})
