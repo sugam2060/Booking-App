@@ -23,9 +23,12 @@ userRoute.post('/register', [
             const user = await User.findOne({
                 email: req.body.email
             })
+            
+
             if (user) {
                 res.status(400).json({ message: "user already exists" })
             } else {
+                
                 const otp = await generateOTP(req.body.email as string)
                 if(!otp){
                     res.status(400).json({message:'Something went wrong'})
@@ -52,7 +55,7 @@ userRoute.post('/verify-otp',async(req:Request,res:Response)=>{
     const cookie = req.cookies['otpToken']
     
     const {otp,firstName,lastName,email,password} = req.body
-     const response = verifyOTP(otp,cookie);
+ const response = verifyOTP(otp,cookie);
     
     if(response){
         try{

@@ -70,3 +70,16 @@ export const signOut = async () => {
         throw new Error("Error during sign out")
     }
 }
+
+
+export const addMyHotel = async (hotelFormData: FormData) => {
+    const response = await axios.post(`${API_BASE_URL}/api/my-hotels`,hotelFormData,{
+        withCredentials:true,
+    })
+
+    if(!response.status){
+        throw new Error("failed to add hotel")
+    }
+    console.log(response.data.message)
+    return response.data.message
+}

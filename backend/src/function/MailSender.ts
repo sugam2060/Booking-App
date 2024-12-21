@@ -1,5 +1,4 @@
 import nodemailer from 'nodemailer'
-import { generateToken } from './generateToken'
 
 const pass = process.env.EMAIL_PASS 
 

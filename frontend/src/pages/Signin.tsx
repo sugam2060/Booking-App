@@ -21,8 +21,8 @@ const Signin = () => {
             await queryClient.invalidateQueries('validateToken')
             navigate('/',{replace:true})
         },
-        onError: (error: Error) => {
-            showToast({messsage:error.message,type:'ERROR'})
+        onError: () => {
+            showToast({messsage:'Invalid Credientials',type:'ERROR'})
         }
 
     })

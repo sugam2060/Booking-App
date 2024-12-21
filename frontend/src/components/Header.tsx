@@ -17,7 +17,7 @@ const Header = () => {
             <SignOutBtn/>
           </> : 
           <>
-            <Link to='/register' className="flex items-center bg-white text=blue-600 px-3 font-bold hover:bg-gray-100 rounded-md text-xl">sign up</Link>
+            {/* <Link to='/register' className="flex items-center bg-white text=blue-600 px-3 font-bold hover:bg-gray-100 rounded-md text-xl">sign up</Link> */}
             <Link to='/sign-in' className="flex items-center bg-white text=blue-600 px-3 font-bold hover:bg-gray-100 rounded-md text-xl">Sign in</Link>
           </>
           }
