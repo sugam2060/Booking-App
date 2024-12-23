@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { ObjectId } from "mongodb";
 
 
 export type hotelType = {
@@ -15,7 +14,7 @@ export type hotelType = {
     facilities: string[];
     pricePerNight: number;
     starRating:number;
-    imageUrls: string[];
+    imageid: string[];
     lastUpdated: Date;
 }
 
@@ -32,11 +31,11 @@ const hotelSchema = new mongoose.Schema<hotelType>({
     facilities: [{type:String,required:true}],
     pricePerNight: {type:Number,required:true},
     starRating: {type:Number,required:true, max:5, min:1},
-    imageUrls: [{type:String,required:true}],
+    imageid: [{type:String,required:true}],
     lastUpdated:{type:Date ,required:true}
 },{timestamps:true})
 
 
-const hotelModel = mongoose.model<hotelType>("Hotels",hotelSchema)
+const hotelModel = mongoose.model<hotelType>("Hotels",hotelSchema,'Hotels')
 
 export default hotelModel

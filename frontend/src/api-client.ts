@@ -73,7 +73,7 @@ export const signOut = async () => {
 
 
 export const addMyHotel = async (hotelFormData: FormData) => {
-    const response = await axios.post(`${API_BASE_URL}/api/my-hotels`,hotelFormData,{
+    const response = await axios.post(`${API_BASE_URL}/api/my-hotels/test`,hotelFormData,{
         withCredentials:true,
     })
 

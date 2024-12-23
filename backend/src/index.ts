@@ -1,4 +1,4 @@
-import express from 'express'
+import express , {Request,Response} from 'express'
 import cors from 'cors'
 import 'dotenv/config'
 import mongoose from 'mongoose'
@@ -11,13 +11,13 @@ import hotelRoute from './routes/myHotel';
 
 //test
 
-try {
-    mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string).then(()=>{
-        console.log("connected to database")
-    })
-} catch (error) {
-    console.log(error)
-}
+mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string).then(()=>{
+    console.log('connected')
+}).catch((err)=>{
+    console.log(err)
+})
+
+
 
 cloudinary.config({
     cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
@@ -45,6 +45,13 @@ app.use('/api/auth',userAuth)
 
 app.use('/api/my-hotels',hotelRoute)
 
+
+// since we have bundled the frondend and backend so if the frontend url/routes are call than the express get confuse whether
+// it is a api request or routing. so this endpoint will catch all the request which are not api request and send the request to
+//frontend dist.index.html file
+app.get('*',(req:Request,res:Response)=>{
+    res.sendFile(path.join(__dirname,'../../frontend/dist/index.html'))
+})
 
 
 
