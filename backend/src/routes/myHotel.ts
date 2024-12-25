@@ -2,11 +2,11 @@ import { Router, Request, Response } from "express";
 import multer from 'multer'
 import cloudinary from 'cloudinary'
 import validate from "../middlewares/verifyToken";
-import hotelModel, { hotelType } from "../Database/models/hotel";
+import hotelModel from "../Database/models/hotel";
+import { hotelType } from "../shared.ts/types";
 import { body } from "express-validator";
 import { GridFsServices } from "../Database/gridFs/GridfsServices";
-import { User } from "../Database/models/user";
-
+import { ObjectId } from "mongodb";
 const hotelRoute = Router();
 
 // const storage = multer.memoryStorage()
@@ -82,7 +82,7 @@ const upload = multer({
 
 
 
-hotelRoute.post('/test', validate, [
+hotelRoute.post('/upload', validate, [
     body('name').notEmpty().withMessage('Name is required'),
     body('city').notEmpty().withMessage('City is required'),
     body('country').notEmpty().withMessage('Country is Required'),
@@ -103,7 +103,6 @@ hotelRoute.post('/test', validate, [
         HotelDetail.imageid = ImageIds
         HotelDetail.lastUpdated=new Date();
         HotelDetail.userid = req.userId
-        console.log(HotelDetail.userid)
 
         const hotel = await hotelModel.create(HotelDetail)
         res.status(200).json({message:'Saved'})
@@ -113,6 +112,44 @@ hotelRoute.post('/test', validate, [
         res.status(400).json({message:'error'})
     }
 })
+
+
+
+hotelRoute.get('/',validate,async (req:Request,res:Response)=>{
+    const userId = req.userId
+    try{
+        const response = await hotelModel.find({userid:userId})
+        if(response){
+            res.status(200).json(response);
+        }else{
+            res.status(400).send('Cannot find the user')
+        }
+    }catch(err){
+        console.log(err)
+        res.status(500).send('something went wrong')
+    }
+})
+
+
+hotelRoute.get('/image', async (req: Request, res: Response) => {
+    try{
+        const ImageIds = req.query.imageId as string[]
+
+        if(!ImageIds || ImageIds.length === 0){
+            res.status(400).send('No image found')
+        }else{
+            const ImageObjArr = ImageIds.map((image)=> new ObjectId(image))
+            console.log(ImageObjArr)
+
+            const ImageBuffer = await gridfsService.fetchFile(ImageObjArr);
+            const base64Image = ImageBuffer.map((ImageFile)=> ImageFile.toString('base64'))
+            res.status(200).json(base64Image)
+        }
+    }catch(err){
+        res.status(500).send('something went wrong')
+        console.log(err)
+    }
+});
 
 
 

@@ -2,6 +2,7 @@ import { RegisterFormData,RegisterFormDataWithOTPType } from "./pages/Register";
 import axios, { AxiosResponse } from "axios";
 import { SigninFormData } from "./pages/Signin";
 
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
 
 
@@ -73,7 +74,7 @@ export const signOut = async () => {
 
 
 export const addMyHotel = async (hotelFormData: FormData) => {
-    const response = await axios.post(`${API_BASE_URL}/api/my-hotels/test`,hotelFormData,{
+    const response = await axios.post(`${API_BASE_URL}/api/my-hotels/upload`,hotelFormData,{
         withCredentials:true,
     })
 
@@ -82,4 +83,35 @@ export const addMyHotel = async (hotelFormData: FormData) => {
     }
     console.log(response.data.message)
     return response.data.message
+}
+
+
+
+export const getHotelData = async () => {
+    const res = await axios.get(`${API_BASE_URL}/api/my-hotels`,{
+        withCredentials:true
+    })
+    if(res.status){
+        return res.data
+    }
+    
+}
+
+export const fetchHotelImage = async () => {
+    const res = await axios.get(`${API_BASE_URL}/api/my-hotels/image`,{
+        withCredentials:true,
+        params:{
+            imageId:[
+                "676b7fc9bfa8dd17b8e98435",
+                "676b7fc9bfa8dd17b8e98436",
+                "676b7fc9bfa8dd17b8e98437",
+                "676b7fc9bfa8dd17b8e98438",
+                "676b7fc9bfa8dd17b8e98439",
+                "676b7fc9bfa8dd17b8e9843a"
+            ]
+        }
+    })
+    if(res.status){
+        return res.data
+    }
 }
