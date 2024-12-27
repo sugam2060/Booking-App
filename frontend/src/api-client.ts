@@ -1,6 +1,7 @@
 import { RegisterFormData,RegisterFormDataWithOTPType } from "./pages/Register";
 import axios, { AxiosResponse } from "axios";
 import { SigninFormData } from "./pages/Signin";
+import { imageIdType } from "../../backend/src/shared/types";
 
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
@@ -97,21 +98,28 @@ export const getHotelData = async () => {
     
 }
 
-export const fetchHotelImage = async () => {
-    const res = await axios.get(`${API_BASE_URL}/api/my-hotels/image`,{
+export const fetchHotelImage = async (imageId:imageIdType[]): Promise<imageIdType[]> => {
+
+
+    const res = await axios.post(`${API_BASE_URL}/api/my-hotels/image`,{ImageIds:imageId},{
         withCredentials:true,
-        params:{
-            imageId:[
-                "676b7fc9bfa8dd17b8e98435",
-                "676b7fc9bfa8dd17b8e98436",
-                "676b7fc9bfa8dd17b8e98437",
-                "676b7fc9bfa8dd17b8e98438",
-                "676b7fc9bfa8dd17b8e98439",
-                "676b7fc9bfa8dd17b8e9843a"
-            ]
+    })
+
+    if(res.status === 200){
+        return res.data as imageIdType[]
+    }else{
+        throw Error
+    }
+}
+
+
+export const  updateMyHotel = async ({Data,hotelid}:{Data:FormData,hotelid:string}) => {
+    const res = await axios.put(`${API_BASE_URL}/api/my-hotels/${hotelid}`,Data,
+        {
+            withCredentials:true
+        ,
+        headers:{
+            'Content-Type':'multipart/form-data'
         }
     })
-    if(res.status){
-        return res.data
-    }
 }

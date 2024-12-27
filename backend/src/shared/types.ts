@@ -1,3 +1,10 @@
+
+export type imageIdType = {
+    imageid :string;
+    Url: string
+}
+
+
 export type hotelType = {
     _id: string;
     userid: string;
@@ -11,6 +18,6 @@ export type hotelType = {
     facilities: string[];
     pricePerNight: number;
     starRating:number;
-    imageid: string[];
+    imageids: imageIdType[]
     lastUpdated: Date;
 }

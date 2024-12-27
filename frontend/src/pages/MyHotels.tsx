@@ -3,7 +3,7 @@ import * as apiClient from '../api-client'
 import { Link } from "react-router-dom"
 import  {BsBuilding, BsMap} from 'react-icons/bs'
 import { BiHotel, BiMoney, BiStar } from "react-icons/bi"
-import { hotelType } from "../../../backend/src/shared.ts/types"
+import { hotelType } from "../../../backend/src/shared/types"
 
 
 
@@ -20,12 +20,13 @@ const MyHotels = () => {
 
 
 
-
+    console.log(HotelData)
 
     
     
 
     if(!HotelData) return
+
 
     
 
@@ -40,8 +41,8 @@ const MyHotels = () => {
                 <div className="grid grid-cols-1 gap-8">
                     {HotelData.map((hotel: hotelType,idx) => {
                         return (
+                            
                             <div key={idx} className="flex flex-col justify-between border border-slate-300 rounded-lg p-8 gap-5">
-                                
                                     <h2 className="text-2xl font-bold">{hotel.name}</h2>
                                     <div className=" break-words">
                                         {hotel.description}
@@ -69,7 +70,7 @@ const MyHotels = () => {
                                         </div>
                                     </div>
                                 <span className="flex justify-end">
-                                    <Link className="flex bg-blue-600 text-white test-xl font-bold p-2 hover:bg-blue-500" to={`/edit-hotel${hotel._id}`}>View Details</Link>
+                                    <Link className="flex bg-blue-600 text-white test-xl font-bold p-2 hover:bg-blue-500" to={`/edit-hotel`} state={{hotel}}>View Details</Link>
                                 </span>
                             </div>
                         )

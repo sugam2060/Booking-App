@@ -1,6 +1,7 @@
 import { channel } from 'diagnostics_channel'
 import {MongoClient,GridFSBucket,ObjectId} from 'mongodb'
 import { Readable } from 'stream'
+import { imageIdType } from '../../shared/types'
 
 
 
@@ -82,6 +83,28 @@ export class GridFsServices {
             return await Promise.all(imagePromise);
         } catch (error) {
             throw error;
+        }
+    }
+
+
+    async UpdateHotel(imageIds: imageIdType[],fileToUpload: Express.Multer.File[]) {
+        try {
+            if(!this.bucket){
+                await this.connect()
+                if(!this.connect){
+                    throw new Error("failed to connect")
+                }
+            }
+
+            await this.uploadFile(fileToUpload)
+
+            for(const imageId of imageIds){
+                const obj = new ObjectId(imageId.imageid)
+                await this.bucket?.delete(obj)
+            }
+
+        } catch (error) {
+            throw error
         }
     }
     
