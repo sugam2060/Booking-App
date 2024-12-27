@@ -41,25 +41,25 @@ const EditHotel = () => {
     },[hotel])
 
     
-    const mutateDelImage = useMutation(apiClient.updateMyHotel,{
-        onSuccess:()=>{
+    // const mutateDelImage = useMutation(apiClient.updateMyHotel,{
+    //     onSuccess:()=>{
 
-        },
-        onError:()=>{
+    //     },
+    //     onError:()=>{
 
-        }
-    })
+    //     }
+    // })
 
-    const handleSave = (hotelFormData:FormData) => {
-        if(!hotel._id) return
-        mutateDelImage.mutate({Data:hotelFormData,hotelid:hotel._id})
-    }
+    // const handleSave = (hotelFormData:FormData) => {
+    //     if(!hotel._id) return
+    //     mutateDelImage.mutate({Data:hotelFormData,hotelid:hotel._id})
+    // }
 
 
 
  return(
     <div>
-            <ManageHotelForm hotel={hotel} onSave={handleSave}  isLoading={isLoading}/>
+            <ManageHotelForm hotel={hotel} onSave={()=>{}}  isLoading={isLoading}/>
             
             
     </div>

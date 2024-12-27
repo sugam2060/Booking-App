@@ -113,13 +113,19 @@ export const fetchHotelImage = async (imageId:imageIdType[]): Promise<imageIdTyp
 }
 
 
-export const  updateMyHotel = async ({Data,hotelid}:{Data:FormData,hotelid:string}) => {
-    const res = await axios.put(`${API_BASE_URL}/api/my-hotels/${hotelid}`,Data,
-        {
-            withCredentials:true
-        ,
-        headers:{
-            'Content-Type':'multipart/form-data'
-        }
-    })
-}
+// export const  updateMyHotel = async ({Data,hotelid}:{Data:FormData,hotelid:string}) => {
+//     const res = await axios.put(`${API_BASE_URL}/api/my-hotels/${hotelid}`,Data,
+//         {
+//             withCredentials:true
+//         ,
+//         headers:{
+//             'Content-Type':'multipart/form-data'
+//         }
+//     })
+
+//     if(res.status === 200){
+//         return res.data
+//     }else{
+//         throw new Error("failed")
+//     }
+// }

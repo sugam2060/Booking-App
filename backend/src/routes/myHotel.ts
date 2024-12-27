@@ -184,7 +184,7 @@ hotelRoute.post('/image', async (req: Request, res: Response) => {
 hotelRoute.put('/:hotelid',validate,upload.array('imageFiles'),async (req:Request,res:Response)=>{
     try {
         const HotelDetails = req.body as hotelType
-        const hotelid = req.params.hotelid as string
+        
         const files = req.files as Express.Multer.File[]
 
         const imageids:imageIdType[] = typeof HotelDetails.imageids === 'string'? JSON.parse(HotelDetails.imageids):HotelDetails.imageids
