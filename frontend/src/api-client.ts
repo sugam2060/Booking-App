@@ -1,7 +1,7 @@
 import { RegisterFormData,RegisterFormDataWithOTPType } from "./pages/Register";
 import axios, { AxiosResponse } from "axios";
 import { SigninFormData } from "./pages/Signin";
-import { imageIdType } from "../../backend/src/shared/types";
+import { hotelType } from "../../backend/src/shared/types";
 
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
@@ -75,7 +75,7 @@ export const signOut = async () => {
 
 
 export const addMyHotel = async (hotelFormData: FormData) => {
-    const response = await axios.post(`${API_BASE_URL}/api/my-hotels/upload`,hotelFormData,{
+    const response = await axios.post(`${API_BASE_URL}/api/my-hotels/`,hotelFormData,{
         withCredentials:true,
     })
 
@@ -98,34 +98,19 @@ export const getHotelData = async () => {
     
 }
 
-export const fetchHotelImage = async (imageId:imageIdType[]): Promise<imageIdType[]> => {
-
-
-    const res = await axios.post(`${API_BASE_URL}/api/my-hotels/image`,{ImageIds:imageId},{
-        withCredentials:true,
+export const  updateMyHotel = async (Data:{formData:FormData,hotelid:string}) => {
+    const res = await axios.put(`${API_BASE_URL}/api/my-hotels/${Data.hotelid}`,Data.formData,
+        {
+            withCredentials:true
+        ,
+        headers:{
+            'Content-Type':'multipart/form-data'
+        }
     })
 
     if(res.status === 200){
-        return res.data as imageIdType[]
+        return res.data
     }else{
-        throw Error
+        throw new Error("failed")
     }
 }
-
-
-// export const  updateMyHotel = async ({Data,hotelid}:{Data:FormData,hotelid:string}) => {
-//     const res = await axios.put(`${API_BASE_URL}/api/my-hotels/${hotelid}`,Data,
-//         {
-//             withCredentials:true
-//         ,
-//         headers:{
-//             'Content-Type':'multipart/form-data'
-//         }
-//     })
-
-//     if(res.status === 200){
-//         return res.data
-//     }else{
-//         throw new Error("failed")
-//     }
-// }

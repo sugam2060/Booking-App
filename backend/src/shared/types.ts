@@ -1,8 +1,4 @@
 
-export type imageIdType = {
-    imageid :string;
-    Url: string
-}
 
 
 export type hotelType = {
@@ -18,6 +14,6 @@ export type hotelType = {
     facilities: string[];
     pricePerNight: number;
     starRating:number;
-    imageids: imageIdType[]
+    imageUrls: string[]
     lastUpdated: Date;
 }

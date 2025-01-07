@@ -1,7 +1,6 @@
 import { channel } from 'diagnostics_channel'
 import {MongoClient,GridFSBucket,ObjectId} from 'mongodb'
 import { Readable } from 'stream'
-import { imageIdType } from '../../shared/types'
 
 
 
@@ -87,7 +86,7 @@ export class GridFsServices {
     }
 
 
-    async UpdateHotel(imageIds: imageIdType[],fileToUpload: Express.Multer.File[]) {
+    async UpdateHotel(imageIds: string[],fileToUpload: Express.Multer.File[]) {
         try {
             if(!this.bucket){
                 await this.connect()
@@ -99,7 +98,7 @@ export class GridFsServices {
             await this.uploadFile(fileToUpload)
 
             for(const imageId of imageIds){
-                const obj = new ObjectId(imageId.imageid)
+                const obj = new ObjectId(imageId)
                 await this.bucket?.delete(obj)
             }
 

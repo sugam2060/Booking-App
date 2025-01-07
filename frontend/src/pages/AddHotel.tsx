@@ -17,6 +17,7 @@ const AddHotel = () => {
 
 
     const handleSave = (hotelFormData: FormData) => {
+        console.log(hotelFormData)
         mutation.mutate(hotelFormData)
     }
 return (

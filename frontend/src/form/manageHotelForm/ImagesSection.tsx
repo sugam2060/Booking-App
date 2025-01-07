@@ -1,17 +1,17 @@
 import { useFormContext } from "react-hook-form"
 import { HotelformData } from "./ManageHotelForm"
-import { imageIdType } from "../../../../backend/src/shared/types"
 
 
 
 const ImagesSection = () => {
     const {register , formState: {errors},watch,setValue} = useFormContext<HotelformData>()
 
-    const ExistingImages = watch('imageids')
-    const handleDelete = (event:React.MouseEvent<HTMLButtonElement,MouseEvent>,imageData:imageIdType)=>{
+    const ExistingImages = watch('imageUrls') || []
+
+    const handleDelete = (event:React.MouseEvent<HTMLButtonElement,MouseEvent>,imageData:string)=>{
         event.preventDefault()
     
-        setValue('imageids',ExistingImages.filter((imgData) => imgData.imageid !== imageData.imageid))
+        setValue('imageUrls',ExistingImages.filter((imgData) => imageData !== imgData))
     }
 
   return (
@@ -22,7 +22,7 @@ const ImagesSection = () => {
             <div className="grid grid-cols-6 gap-4">
                 {ExistingImages.map((image,idx)=>(
                     <div key={idx} className="relative group">
-                        <img src={image.Url} className="min-h-full object-cover"/>
+                        <img src={image} className="min-h-full object-cover"/>
                         <button onClick={(e)=> handleDelete(e,image)} className="absolute inset-0 flex items-center justify-center bg-black text-white bg-opacity-50 opacity-0 hover:opacity-100">Delete</button>
                     </div>
                 ))}
