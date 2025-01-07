@@ -1,7 +1,6 @@
 import { RegisterFormData,RegisterFormDataWithOTPType } from "./pages/Register";
 import axios, { AxiosResponse } from "axios";
 import { SigninFormData } from "./pages/Signin";
-import { hotelType } from "../../backend/src/shared/types";
 
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''

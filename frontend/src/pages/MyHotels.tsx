@@ -1,10 +1,9 @@
-import { useQuery, useQueryClient } from "react-query"
+import { useQuery } from "react-query"
 import * as apiClient from '../api-client'
 import { Link } from "react-router-dom"
 import  {BsBuilding, BsMap} from 'react-icons/bs'
 import { BiHotel, BiMoney, BiStar } from "react-icons/bi"
 import { hotelType } from "../../../backend/src/shared/types"
-import { useEffect } from "react"
 
 
 
