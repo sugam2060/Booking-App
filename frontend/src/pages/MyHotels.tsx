@@ -10,15 +10,15 @@ import { hotelType } from "../../../backend/src/shared/types"
 
 const MyHotels = () => {
 
-    
 
     const { data: HotelData } = useQuery<hotelType[]>("fetchMyHotels", apiClient.getHotelData, {
+        
         onError: (e) => {
             console.log(e)
-        },
-        refetchOnMount:'always'
+        }
     })
 
+     
     
     
 
