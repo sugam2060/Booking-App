@@ -126,25 +126,36 @@ hotelRoute.put('/:hotelid', [
     body('childCount').isNumeric().withMessage('must be a number'),
     body('starRating').isNumeric().withMessage('rating must be a number')
 ]
-    , validate, upload.array('imageFiles'), async (req: Request, res: Response) => {
+    , validate, upload.array('imageFiles'), async (req: Request, res: Response): Promise<any> => {
         try {
-            const updatedHotel :hotelType = req.body
+            const updatedHotel :hotelType = req.body as hotelType
+
 
             const imageFiles = req.files as Express.Multer.File[]
 
             const ExistingImage = await hotelModel.findOne({_id:req.params.hotelid,userid:req.userId},{imageUrls:1,_id:0})
-            const imageurl = ExistingImage?.imageUrls as string[]
+
+            if(!ExistingImage){
+                return res.status(400).send('error')
+            }
+
+            const imageurl = Array.isArray(updatedHotel.imageUrls)?updatedHotel.imageUrls:[]
+
+
+
+            const ImageToDelete = ExistingImage.imageUrls.filter(image => !imageurl.some(url => image.includes(url)))
+
             
 
-            const ImageToDelete = imageurl.filter(image => !updatedHotel.imageUrls.some(url => image.includes(url)))
+            if(ImageToDelete.length > 0){
+                await cloudinaryDelete(ImageToDelete)
+            }
 
-            await cloudinaryDelete(ImageToDelete)
-
-            if(imageFiles){
+            if(imageFiles.length > 0){
                 const newImageUrls = await cloudinaryUpload(imageFiles)
-
-                updatedHotel.imageUrls = [...newImageUrls,
-                    ...(updatedHotel.imageUrls || [])]
+                
+                updatedHotel.imageUrls = [...imageurl,
+                    ...(newImageUrls || [])]
             }
 
             const hotel = await hotelModel.findOneAndUpdate({
@@ -152,10 +163,12 @@ hotelRoute.put('/:hotelid', [
                 userid:req.userId
             },updatedHotel,{new:true})
 
-            res.send(hotel)
+
+            res.status(200).send("updated")
 
         } catch (error) {
-            throw error
+            console.log(error)
+            res.status(500).send('something went wrong')
         }
     })
 

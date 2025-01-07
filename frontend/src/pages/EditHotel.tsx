@@ -31,7 +31,7 @@ const EditHotel = () => {
 
  return(
     <div>
-            <ManageHotelForm hotel={hotel} onSave={onSave}  isLoading={false}/>
+            <ManageHotelForm hotel={hotel} onSave={onSave}  isLoading={mutation.isLoading}/>
             
             
             
