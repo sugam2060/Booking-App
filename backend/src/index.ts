@@ -7,7 +7,8 @@ import userAuth from './routes/auth';
 import cookieParser from 'cookie-parser'
 import path from 'path'
 import {v2 as cloudinary} from 'cloudinary'
-import hotelRoute from './routes/myHotel';
+import MyhotelRoute from './routes/myHotel';
+import hotelRoutes from './routes/hotel'
 
 //test
 
@@ -43,7 +44,9 @@ app.use('/api/users',userRoute)
 
 app.use('/api/auth',userAuth)
 
-app.use('/api/my-hotels',hotelRoute)
+app.use('/api/my-hotels',MyhotelRoute)
+
+app.use('/api/hotels',hotelRoutes)
 
 
 // since we have bundled the frondend and backend so if the frontend url/routes are call than the express get confuse whether
