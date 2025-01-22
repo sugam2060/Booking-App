@@ -1,0 +1,18 @@
+.custom-scrollbar::-webkit-scrollbar {
+    height: 8px; /* Height of the scrollbar */
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #f3f4f6; /* Light background color */
+    border-radius: 8px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #9ca3af; /* Gray color for the thumb */
+    border-radius: 8px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #6b7280; /* Darker gray when hovered */
+  }
+  

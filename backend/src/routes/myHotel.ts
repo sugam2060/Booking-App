@@ -5,6 +5,7 @@ import validate from "../middlewares/verifyToken";
 import hotelModel from "../Database/models/hotel";
 import { hotelType } from "../shared/types";
 import { body } from "express-validator";
+import { CloudinaryServices } from '../Database/CloudinaryOps/CloudinaryServices'
 
 
 
@@ -18,41 +19,6 @@ const upload = multer({
         fileSize: 20 * 1024 * 1024 //20MB
     }
 })
-
-
-async function cloudinaryUpload(imageFiles: Express.Multer.File[]) {
-    const uploadPromise = imageFiles.map(async (image) => {
-        const b64String = Buffer.from(image.buffer).toString("base64");
-        const dataURI = `data:${image.mimetype};base64,${b64String}`;
-        const res = await cloudinary.v2.uploader.upload(dataURI);
-        return res.url;
-    });
-
-    const imageUrls = await Promise.all(uploadPromise);
-    return imageUrls;
-}
-
-const extractPublicIds = (urls:string[]) => {
-    const publicIds = urls.map(url=>{
-        const urlObj = new URL(url)
-        const pathParts =urlObj.pathname.split('/')
-        const publicId = pathParts.slice(pathParts.findIndex(part=>part.startsWith('v'))+1).join('/').split('.')[0];
-        return publicId
-    })
-
-    return publicIds
-}
-
-const cloudinaryDelete = async (urls:string[]) => {
-
-    const publicIds = extractPublicIds(urls)
-    try {
-        await cloudinary.v2.api.delete_resources(publicIds)
-    } catch (error) {
-        throw error
-    }
-
-}
 
 
 // api/my-hotels
@@ -73,11 +39,11 @@ hotelRoute.post('/', validate, [
     try {
         const imageFiles = req.files as Express.Multer.File[];
         const HotelDetail: hotelType = req.body;
-
+        const cloudinaryService = new CloudinaryServices()
 
         // cloudinary Upload
 
-        const imageUrls = await cloudinaryUpload(imageFiles);
+        const imageUrls = await cloudinaryService.cloudinaryUpload(imageFiles);
 
         HotelDetail.imageUrls = imageUrls
 
@@ -128,6 +94,7 @@ hotelRoute.put('/:hotelid', [
 ]
     , validate, upload.array('imageFiles'), async (req: Request, res: Response): Promise<any> => {
         try {
+            const cloudinaryService = new CloudinaryServices();
             const updatedHotel :hotelType = req.body as hotelType
 
 
@@ -148,11 +115,11 @@ hotelRoute.put('/:hotelid', [
             
 
             if(ImageToDelete.length > 0){
-                await cloudinaryDelete(ImageToDelete)
+                await cloudinaryService.cloudinaryDelete(ImageToDelete)
             }
 
             if(imageFiles.length > 0){
-                const newImageUrls = await cloudinaryUpload(imageFiles)
+                const newImageUrls = await cloudinaryService.cloudinaryUpload(imageFiles)
                 
                 updatedHotel.imageUrls = [...imageurl,
                     ...(newImageUrls || [])]
