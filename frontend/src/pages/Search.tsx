@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { useSearchContext } from "../contexts/SearchContext"
 import * as apiClient from '@/api-client'
-import { useState } from "react";
+// import { useState } from "react";
 import { hotelType } from "../../../backend/src/shared/types";
 import SearchResultCard from "@/components/SearchResultCard";
 
@@ -10,7 +10,7 @@ const Search = () => {
 
     const search = useSearchContext();
 
-    const [page,setPage] = useState<number>(1);
+    // const [page,setPage] = useState<number>(1);
 
     const searchParams: apiClient.SearchParams = {
       destination:search.destination,
@@ -18,7 +18,7 @@ const Search = () => {
       checkOut:search.checkOut.toISOString(),
       adultCount:search.adultCount.toString(),
       childCount:search.childCount.toString(),
-      page:page.toString()
+      page:"1"
     }
     
     const {data:hotelDate} = useQuery(["searchHotels",searchParams],()=>apiClient.searchHotel(searchParams))
